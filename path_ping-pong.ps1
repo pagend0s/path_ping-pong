@@ -1,4 +1,4 @@
-﻿function path_ping-pong(){
+function path_ping-pong(){
 Param
 (
     [Parameter(Mandatory=$true, Position=0)]
@@ -10,7 +10,9 @@ Param
 
 $pathping_result = pathping /n $IP4
 
-$IP = @( ($pathping_result  |  Select-String -Pattern "\d{1,3}(\.\d{1,3}){3}" -AllMatches).Matches.Value | Sort-Object | Get-Unique )
+$filtr_path = $pathping_result | foreach { $_.split() }
+
+$IP = @( ($filtr_path  |  Select-String -Pattern "\d{1,3}(\.\d{1,3}){3}" -AllMatches).Matches.Value )
 
 Write-Output $pathping_result
 
